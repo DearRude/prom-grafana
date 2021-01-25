@@ -4,6 +4,7 @@ To bootstrap the volumes for the first time do as following:
 - `docker-compose up`
 - `chown -R 472:1 grafana/`
 - `chmod -R 777 grafana/`
+- `touch grafana/etc/grafana.ini`
 - `docker-compose up -d`
 
 ### SSH local portforwarding
