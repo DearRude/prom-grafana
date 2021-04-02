@@ -1,14 +1,10 @@
 
-## Bootstrap
-To bootstrap the volumes for the first time do as following:
+## Run
+Just run with docker-compose:
 - `docker-compose up`
-- `chown -R 472:1 grafana/`
-- `chmod -R 777 grafana/`
-- `touch grafana/etc/grafana.ini`
-- `docker-compose up -d`
 
 ### SSH local portforwarding
-Instead of exposing ports in docker-compose, we forward their port via SSH to local
+Instead of exposing ports in docker-compose, you acn forward their port via SSH to local
 
 To find docker container IP run `docker inspect <container>` and look for _"IPAddress":_
 

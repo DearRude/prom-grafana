@@ -3,10 +3,13 @@ version: "3"
 services:
   prometheus:
     image: prom/prometheus:latest
+    user: "$UID:$GID"
     volumes:
       - ./prometheus:/etc/prometheus
+      - ./prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
 
   n_exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -19,8 +22,25 @@ services:
     volumes:
       - '/:/host:ro,rslave'
 
+  cadvisor:
+    image: google/cadvisor:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
   grafana:
     image: grafana/grafana
+    user: "$UID:$GID"
+    ports:
+      - 3000:3000
     volumes:
-      - ./grafana/var/lib:/var/lib/grafana
-      - ./grafana/etc:/etc/grafana
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=badanavazkon
+      - GF_USERS_ALLOW_SIGN_UP=false
